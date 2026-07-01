@@ -2,6 +2,7 @@ package learning_JDBC.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -12,7 +13,6 @@ import learning_JDBC.entity.Students;
 
 public class StudentsDaoImpl implements StudentsDao {
 
-	public static final String INSERT_QUERRY = "INSERT into students (Id, Name, Gender, Address) VALUES (%d, '%s', '%s', '%s')";
 	public static final String UPDATE_QUERRY = "UPDATE students SET Id = %d, Name = '%s', Gender = '%s', Address = '%s' where Id = %d";
 	public static final String SELECT_QUERRY = "SELECT * from students";
 	public static final String GET_STUDENT_BY_ID = "SELECT * from students where id = %d";
@@ -31,13 +31,17 @@ public class StudentsDaoImpl implements StudentsDao {
 
 	@Override
 	public void saveStudents(Students s1) {
-		try (Statement statement = connection.createStatement();) {
-//			statement.executeUpdate("insert into students  values ("+s1.getId()+", '"+s1.getName()+"','"+s1.getGender()+"','"+s1.getCity()+"');");
-			statement.executeUpdate(
-					String.format(INSERT_QUERRY, s1.getId(), s1.getName(), s1.getGender(), s1.getCity()));
+		try ( PreparedStatement ps = connection.prepareStatement("INSERT into students (Id, Name, Gender, Address) VALUES (?, ?, ?, ?)");) 
+		{
+			ps.setInt(1, s1.getId());
+			ps.setString(2, s1.getName());
+			ps.setString(3, s1.getGender());
+			ps.setString(4, s1.getCity());
+			
+			ps.executeUpdate();
+			
 
-			System.out.println("insert into students  values (" + s1.getId() + ", '" + s1.getName() + "','"
-					+ s1.getGender() + "','" + s1.getCity() + "');");
+			System.out.println("INSERT into students (Id, Name, Gender, Address) VALUES (?, ?, ?, ?)");
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -46,11 +50,15 @@ public class StudentsDaoImpl implements StudentsDao {
 
 	@Override
 	public void updateStudents(Students s1) throws SQLException {
-		Statement statement = connection.createStatement();
-//			statement.executeUpdate("UPDATE students SET Name = ' "+s1.getName()+"',Gender = ' "+s1.getGender()+" ' , Address = ' "+s1.getCity()+" ' where id = ' "+s1.getId()+"' ");
-		statement.executeUpdate(
-				String.format(UPDATE_QUERRY, s1.getId(), s1.getName(), s1.getGender(), s1.getCity(), s1.getId()));
-
+		PreparedStatement ps = connection.prepareStatement("UPDATE students SET Id = ?, Name = ?, Gender = ?, Address = ? where Id = ?");
+		
+		ps.setInt(1, s1.getId());
+		ps.setString(2, s1.getName());
+		ps.setString(3, s1.getGender());
+		ps.setString(4, s1.getCity());
+		ps.setInt(5, s1.getId());
+		
+		ps.executeUpdate();
 	}
 
 	@Override
@@ -109,7 +117,7 @@ public class StudentsDaoImpl implements StudentsDao {
 	
 	
 	@Override
-	public Students getStudentByName(String name) {
+	public Students getStudentByName(String name) {			// SQL injection
 		Students s = new Students();         // dummy object
 
 		try (Statement statement = connection.createStatement();) {
@@ -117,15 +125,14 @@ public class StudentsDaoImpl implements StudentsDao {
 
 			while (resultSet.next()) {
 
-				s.setId(resultSet.getInt(1));
-				s.setName(resultSet.getString(2));
-				s.setGender(resultSet.getString(3));
-				s.setCity(resultSet.getString(4));
-				
+				System.out.println("Id = " + resultSet.getInt(1) + "    Name = " + resultSet.getString(2)
+				+ "    Gender = " + resultSet.getString(3) + "     Address = " + resultSet.getString(4));
+
+			}
 				System.out.println(String.format(GET_STUDENT_BY_NAME, name));
 				
 			
-			}
+			
 
 		} catch (SQLException e) {
 			e.printStackTrace();

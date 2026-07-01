@@ -14,53 +14,29 @@ public class Jdbc {
 
 	public static void main(String[] args) throws SQLException  {
 		
-//		Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc", "root", "root");
-//		Statement statement = connection.createStatement();
-//		statement.executeUpdate("insert into students  values (5, 'Kriti','Female','Buxar');");
 		
-//		optimized, shortcut
-//		DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc", "root", "root").createStatement().executeUpdate("insert into students  values (5, 'Kriti','Female','Buxar');");
-//		
-//		System.out.println("main");
-		
-		
-//		Students s1 = new Students(8, "Anjali", "Female", "Buxar");
-//		
-//		DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc", "root", "root").createStatement().executeUpdate("insert into students  values ("+s1.getId()+", '"+s1.getName()+"','"+s1.getGender()+"','"+s1.getCity()+"');");
-//		
-//		System.out.println("main");
-//		
-		
-//		Students s1 = new Students(4, "Twinkle","Female", "Buxar");
-//		Students s2 = new Students(5, "Divya","Female", "Buxar");
-//		Students s3 = new Students(6, "Sony","Female", "Chini Mill");
+		Students s1 = new Students(2, "Muskan","Female", "Patna");
 		  
 		StudentsDao edao = new StudentsDaoImpl();
 		
 //		edao.saveStudents(s1);
-//		edao.saveStudents(s2);
-//		edao.saveStudents(s3);
 		
 //		edao.deleteStudents(6);
-//		edao.deleteStudents(7);
-//		edao.deleteStudents(12);
 		
-//		edao.updateStudents(s3);
+		edao.updateStudents(s1);
 		
-//		edao.printAllStudents();
+		edao.printAllStudents();
 		 
 //		Students p = edao.getStudentById(3);
-//		System.out.println(p);
-		
-//		Students p = edao.getStudentByName("Muskan");
 //		System.out.println(p);
 		
 //		List<Students> p = edao.getAllStudents();
 //		System.out.println(p);
 //		or
-		System.out.println(edao.getAllStudents());
+//		System.out.println(edao.getAllStudents());
 		
-//		edao.getAllStudents();
+//		 edao.getStudentByName("Musk' or ' 1 = 1");      // SQl injection
+	
 		
 		
 		
