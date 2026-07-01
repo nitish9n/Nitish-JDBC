@@ -10,7 +10,8 @@ public interface StudentsDao {
 	public void saveStudents(Students s1);
 	public void updateStudents (Students s1) throws SQLException;
 	public void deleteStudents(int id);
-	public Students getStudents(int id);
+	public Students getStudentById(int id);
+	public Students getStudentByName(String name);
 	public void printAllStudents();
 	public List<Students> getAllStudents();
 	

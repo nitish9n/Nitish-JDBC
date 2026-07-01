@@ -32,8 +32,8 @@ public class Jdbc {
 		
 //		Students s1 = new Students(4, "Twinkle","Female", "Buxar");
 //		Students s2 = new Students(5, "Divya","Female", "Buxar");
-		Students s3 = new Students(6, "Sony","Female", "Chini Mill");
-		
+//		Students s3 = new Students(6, "Sony","Female", "Chini Mill");
+		  
 		StudentsDao edao = new StudentsDaoImpl();
 		
 //		edao.saveStudents(s1);
@@ -42,10 +42,21 @@ public class Jdbc {
 		
 //		edao.deleteStudents(6);
 //		edao.deleteStudents(7);
-//		edao.deleteStudents(14);
+//		edao.deleteStudents(12);
 		
-		edao.updateStudents(s3);
+//		edao.updateStudents(s3);
+		
+//		edao.printAllStudents();
 		 
+//		Students p = edao.getStudentById(3);
+//		System.out.println(p);
+		
+		Students p = edao.getStudentByName("Muskan");
+		System.out.println(p);
+		
+		
+		
+		
 	}
 
 }

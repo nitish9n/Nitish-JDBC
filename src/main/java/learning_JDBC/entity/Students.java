@@ -19,6 +19,13 @@ public class Students {
 
 	
 	
+	public Students() {
+		super();
+
+	}
+
+
+
 	public String getName() {
 		return name;
 	}
