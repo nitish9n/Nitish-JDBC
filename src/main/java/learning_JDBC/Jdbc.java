@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 import learning_JDBC.dao.StudentsDao;
 import learning_JDBC.dao.StudentsDaoImpl;
@@ -51,8 +52,15 @@ public class Jdbc {
 //		Students p = edao.getStudentById(3);
 //		System.out.println(p);
 		
-		Students p = edao.getStudentByName("Muskan");
-		System.out.println(p);
+//		Students p = edao.getStudentByName("Muskan");
+//		System.out.println(p);
+		
+//		List<Students> p = edao.getAllStudents();
+//		System.out.println(p);
+//		or
+		System.out.println(edao.getAllStudents());
+		
+//		edao.getAllStudents();
 		
 		
 		

@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import learning_JDBC.entity.Students;
@@ -138,10 +139,30 @@ public class StudentsDaoImpl implements StudentsDao {
 	@Override
 	public List<Students> getAllStudents() {
 		
+		List<Students> std = new ArrayList<>();
 		
 		
-		
-		
-		return null;
+		try (Statement statement = connection.createStatement();) {
+			ResultSet resultSet = statement.executeQuery(String.format(SELECT_QUERRY));
+
+			while (resultSet.next()) {
+				Students s = new Students();
+				
+				s.setId(resultSet.getInt(1));
+				s.setName(resultSet.getString(2));
+				s.setGender(resultSet.getString(3));
+				s.setCity(resultSet.getString(4));
+				
+				std.add(s);
+			
+			}
+			
+			System.out.println(String.format(SELECT_QUERRY));
+
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return std;
 	}
 }
