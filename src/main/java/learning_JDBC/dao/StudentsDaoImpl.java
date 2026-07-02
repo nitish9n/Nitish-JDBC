@@ -7,13 +7,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import learning_JDBC.entity.Students;
 
 public class StudentsDaoImpl implements StudentsDao {
 
-	public static final String SELECT_QUERRY = "SELECT * from students";
 	public static final String GET_STUDENT_BY_NAME = "SELECT * from students where name = '%s'";
 
 	static Connection connection = null;
@@ -176,5 +176,74 @@ public class StudentsDaoImpl implements StudentsDao {
 			e.printStackTrace();
 		}
 		return std;
+	}
+
+	@Override
+	public void transaction() {            // Transaction
+		
+		Students s1 = new Students();
+		try {
+			connection.setAutoCommit(false);
+		
+		
+		try(PreparedStatement ps1 = connection.prepareStatement("UPDATE students SET Id = ?, Name = ? where Id = ?");
+			PreparedStatement ps2 = connection.prepareStatement("UPDATE students SET Gender = ?, Address = ? where Id = ?")	) 
+		{
+			
+			ps1.setInt(1, s1.getId());
+			ps1.setString(2, s1.getName());
+			ps1.setInt(3, s1.getId());
+			
+			ps2.setString(1, s1.getGender());
+			ps2.setString(2, s1.getCity());
+			ps2.setInt(3, s1.getId());
+			
+			ps1.executeUpdate();
+			ps2.executeUpdate();
+			
+			connection.commit();
+			System.out.println("Transaction success");
+			
+		} catch (SQLException e) {
+			connection.rollback();
+			System.err.println("Transaction failed. Rolling back changes.");
+			e.printStackTrace();
+		}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				connection.setAutoCommit(true);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	@Override
+	public void batchProcessing() throws SQLException {
+		connection.setAutoCommit(false);
+		PreparedStatement ps = connection.prepareStatement("INSERT into students (Id, Name, Gender, Address) VALUES (?, ?, ?, ?)");
+		
+		for (int i = 1; i <= 10; i++) {
+			
+			ps.setInt(1, 6+i );
+			ps.setString(2, "Muskan "+i);
+			ps.setString(3, "Female");
+			ps.setString(4, "Patna");
+			
+			ps.addBatch();
+			
+		
+		if (i%2 == 0) {
+			ps.executeBatch();
+			connection.commit();
+			System.out.println("Batch updated successfully");
+			}
+		}
+		
 	}
 }

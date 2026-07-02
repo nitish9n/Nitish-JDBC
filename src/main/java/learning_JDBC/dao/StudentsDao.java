@@ -14,5 +14,7 @@ public interface StudentsDao {
 	public Students getStudentByName(String name);
 	public void printAllStudents();
 	public List<Students> getAllStudents();
+	public void transaction();
+	public void batchProcessing() throws SQLException;
 	
 }
