@@ -27,16 +27,17 @@ public class Jdbc {
 		
 //		edao.printAllStudents();
 		 
-		Students p = edao.getStudentById(1);
-		System.out.println(p);
-		
-//		List<Students> p = edao.getAllStudents();
+//		Students p = edao.getStudentById(1);
 //		System.out.println(p);
+		
+		List<Students> p = edao.getAllStudents();
+		System.out.println(p);
 //		or
 //		System.out.println(edao.getAllStudents());
 		
 //		 edao.getStudentByName("Musk' or ' 1 = 1");      // SQl injection
-	
+		
+		
 		
 		
 		

@@ -14,7 +14,6 @@ import learning_JDBC.entity.Students;
 public class StudentsDaoImpl implements StudentsDao {
 
 	public static final String SELECT_QUERRY = "SELECT * from students";
-	public static final String GET_STUDENT_BY_ID = "SELECT * from students where id = %d";
 	public static final String GET_STUDENT_BY_NAME = "SELECT * from students where name = '%s'";
 
 	static Connection connection = null;
@@ -106,17 +105,13 @@ public class StudentsDaoImpl implements StudentsDao {
 			
 
 			ResultSet resultSet = ps.executeQuery();
-			resultSet.next();
+			resultSet.next();   // it is mandatory because, before it, it points -1 row(by default). now it points first row 
 
 				 s.setId(resultSet.getInt(1));
 				 s.setName(resultSet.getString(2));
 				 s.setGender(resultSet.getString(3));
 				 s.setCity(resultSet.getString(4));
 				
-//					System.out.println(resultSet.getInt(1)+":   "+resultSet.getString(2)+",    "+resultSet.getString(3)+",    "+resultSet.getString(4));
-				
-			
-			
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -159,8 +154,8 @@ public class StudentsDaoImpl implements StudentsDao {
 		List<Students> std = new ArrayList<>();
 		
 		
-		try (Statement statement = connection.createStatement();) {
-			ResultSet resultSet = statement.executeQuery(String.format(SELECT_QUERRY));
+		try (PreparedStatement ps = connection.prepareStatement("SELECT * from students");) {
+			ResultSet resultSet = ps.executeQuery();
 
 			while (resultSet.next()) {
 				Students s = new Students();
@@ -174,7 +169,7 @@ public class StudentsDaoImpl implements StudentsDao {
 			
 			}
 			
-			System.out.println(String.format(SELECT_QUERRY));
+//			System.out.println(String.format(SELECT_QUERRY));
 
 
 		} catch (SQLException e) {
