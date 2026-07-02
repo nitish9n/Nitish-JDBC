@@ -13,11 +13,9 @@ import learning_JDBC.entity.Students;
 
 public class StudentsDaoImpl implements StudentsDao {
 
-	public static final String UPDATE_QUERRY = "UPDATE students SET Id = %d, Name = '%s', Gender = '%s', Address = '%s' where Id = %d";
 	public static final String SELECT_QUERRY = "SELECT * from students";
 	public static final String GET_STUDENT_BY_ID = "SELECT * from students where id = %d";
 	public static final String GET_STUDENT_BY_NAME = "SELECT * from students where name = '%s'";
-	private static final String DELETE_QUERY = "DELETE FROM students WHERE ID = %d";
 
 	static Connection connection = null;
 	static {
@@ -63,8 +61,11 @@ public class StudentsDaoImpl implements StudentsDao {
 
 	@Override
 	public void deleteStudents(int id) {
-		try (Statement statement = connection.createStatement();) {
-			statement.executeUpdate(String.format(DELETE_QUERY, id));
+		try ( PreparedStatement ps = connection.prepareStatement("DELETE FROM students WHERE ID = ?");) {
+			
+			ps.setInt(1, id);
+			
+			ps.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -72,17 +73,24 @@ public class StudentsDaoImpl implements StudentsDao {
 	
 	@Override
 	public void printAllStudents() {
-		try (Statement statement = connection.createStatement();) {
-			ResultSet resultSet = statement.executeQuery(SELECT_QUERRY);
+		try (PreparedStatement ps = connection.prepareStatement("SELECT * from students");) {
+			
+			ResultSet resultSet = ps.executeQuery();
 
 			while (resultSet.next()) {
-
-				System.out.println("Id = " + resultSet.getInt(1) + "    Name = " + resultSet.getString(2)
-						+ "    Gender = " + resultSet.getString(3) + "     Address = " + resultSet.getString(4));
-
+				
+				int id = resultSet.getInt(1);
+				String name = resultSet.getString(2);
+				String gender = resultSet.getString(3);
+				String address = resultSet.getString(4);
+				
+				System.out.println( id +":   "+ name+",   "+ gender+",   "+ address);
+				System.out.println("---------------------------------");
+//				 or
+//				System.out.println(resultSet.getInt(1)+":   "+resultSet.getString(2)+",    "+resultSet.getString(3)+",    "+resultSet.getString(4));
+				
 			}
-
-			System.out.println(SELECT_QUERRY);
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -93,20 +101,22 @@ public class StudentsDaoImpl implements StudentsDao {
 		
 		Students s = new Students();         // dummy object
 
-		try (Statement statement = connection.createStatement();) {
-			ResultSet resultSet = statement.executeQuery(String.format(GET_STUDENT_BY_ID, id));
+		try (PreparedStatement ps = connection.prepareStatement("SELECT * from students where id = ?");) {
+			ps.setInt(1, id);	
+			
 
-			while (resultSet.next()) {
+			ResultSet resultSet = ps.executeQuery();
+			resultSet.next();
 
-				s.setId(resultSet.getInt(1));
-				s.setName(resultSet.getString(2));
-				s.setGender(resultSet.getString(3));
-				s.setCity(resultSet.getString(4));
+				 s.setId(resultSet.getInt(1));
+				 s.setName(resultSet.getString(2));
+				 s.setGender(resultSet.getString(3));
+				 s.setCity(resultSet.getString(4));
 				
-				System.out.println(String.format(GET_STUDENT_BY_ID, id));
+//					System.out.println(resultSet.getInt(1)+":   "+resultSet.getString(2)+",    "+resultSet.getString(3)+",    "+resultSet.getString(4));
 				
 			
-			}
+			
 
 		} catch (SQLException e) {
 			e.printStackTrace();
