@@ -61,7 +61,7 @@ public class StudentsDaoImpl implements StudentsDao {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
 	public void printAllStudents() {
 		try (Statement statement = connection.createStatement();) {
@@ -82,8 +82,8 @@ public class StudentsDaoImpl implements StudentsDao {
 
 	@Override
 	public Students getStudentById(int id) {
-		
-		Students s = new Students();         // dummy object
+
+		Students s = new Students(); // dummy object
 
 		try (Statement statement = connection.createStatement();) {
 			ResultSet resultSet = statement.executeQuery(String.format(GET_STUDENT_BY_ID, id));
@@ -94,23 +94,21 @@ public class StudentsDaoImpl implements StudentsDao {
 				s.setName(resultSet.getString(2));
 				s.setGender(resultSet.getString(3));
 				s.setCity(resultSet.getString(4));
-				
+
 				System.out.println(String.format(GET_STUDENT_BY_ID, id));
-				
-			
+
 			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		return s;
 	}
-	
-	
+
 	@Override
 	public Students getStudentByName(String name) {
-		Students s = new Students();         // dummy object
+		Students s = new Students(); // dummy object
 
 		try (Statement statement = connection.createStatement();) {
 			ResultSet resultSet = statement.executeQuery(String.format(GET_STUDENT_BY_NAME, name));
@@ -121,10 +119,9 @@ public class StudentsDaoImpl implements StudentsDao {
 				s.setName(resultSet.getString(2));
 				s.setGender(resultSet.getString(3));
 				s.setCity(resultSet.getString(4));
-				
+
 				System.out.println(String.format(GET_STUDENT_BY_NAME, name));
-				
-			
+
 			}
 
 		} catch (SQLException e) {
@@ -133,32 +130,27 @@ public class StudentsDaoImpl implements StudentsDao {
 		return s;
 	}
 
-	
-	
-
 	@Override
 	public List<Students> getAllStudents() {
-		
+
 		List<Students> std = new ArrayList<>();
-		
-		
+
 		try (Statement statement = connection.createStatement();) {
 			ResultSet resultSet = statement.executeQuery(String.format(SELECT_QUERRY));
 
 			while (resultSet.next()) {
 				Students s = new Students();
-				
+
 				s.setId(resultSet.getInt(1));
 				s.setName(resultSet.getString(2));
 				s.setGender(resultSet.getString(3));
 				s.setCity(resultSet.getString(4));
-				
-				std.add(s);
-			
-			}
-			
-			System.out.println(String.format(SELECT_QUERRY));
 
+				std.add(s);
+
+			}
+
+			System.out.println(String.format(SELECT_QUERRY));
 
 		} catch (SQLException e) {
 			e.printStackTrace();
