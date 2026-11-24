@@ -2,6 +2,7 @@ package learning_JDBC;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
@@ -12,35 +13,52 @@ import learning_JDBC.entity.Students;
 
 public class Jdbc {
 
-	public static void main(String[] args) throws SQLException  {
-		
-		
-		Students s1 = new Students(2, "Muskan","Female", "Patna");
-		  
+	public static void main(String[] args) throws SQLException {
+
+		Students s1 = new Students(2, "Muskan", "Female", "Patna");
+
 		StudentsDao edao = new StudentsDaoImpl();
-		
+
 //		edao.transaction();
-		
+
 //		edao.saveStudents(s1);
-		
+
 //		edao.deleteStudents(7);
-		
+
 //		edao.updateStudents(s1);
-		
-		edao.printAllStudents();
-		 
+
+//		edao.printAllStudents();
+
 //		Students p = edao.getStudentById(1);
 //		System.out.println(p);
-		
+
 //		List<Students> p = edao.getAllStudents();
 //		System.out.println(p);
 ////		or
 //		System.out.println(edao.getAllStudents());
-		
+
 //		 edao.getStudentByName("Musk' or ' 1 = 1");      // SQl injection
-		
+
 //		edao.batchProcessing();
+
+		Connection connection = null;
+		try {
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc", "root", "root");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
+		try {
+			PreparedStatement ps = connection.prepareStatement("insert into students (id, name, gender, address) values (?, ?, ?, ?)");
+			ps.setInt(1,17);
+			ps.setString(2,"Nitishh");
+			ps.setString(3,"Male");
+			ps.setString(4,"Noida");
+			
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
 		
 		
